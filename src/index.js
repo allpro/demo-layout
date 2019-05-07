@@ -9,7 +9,7 @@ const isGitHubPages = /(github\.io|codesandbox\.io)/.test(window.location.hostna
 
 
 function DemoLayout(props) {
-	const { packageName, title, pages } = props
+	const { packageName, pages } = props
 
 	// console.log('DemoLayout', props)
 
