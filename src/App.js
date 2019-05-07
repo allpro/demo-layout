@@ -1,5 +1,5 @@
-import React, { Fragment, createRef } from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
+import React, { createRef } from 'react'
+import { Switch, NavLink, withRouter, matchPath } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { withStyles } from '@material-ui/core/styles'
@@ -9,14 +9,23 @@ import Hidden from '@material-ui/core/Hidden'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import MenuIcon from '@material-ui/icons/Menu'
 
-import Routes from './Routes'
+import PropsRoute from './PropsRoute'
+import Home from './Home'
+
+const darkTheme = createMuiTheme({
+	palette: {
+		type: 'dark'
+	}
+})
 
 const drawerWidth = 200
 
@@ -37,7 +46,8 @@ const styles = theme => ({
 		}
 	},
 	drawerPaper: {
-		width: drawerWidth
+		width: drawerWidth,
+		backgroundColor: '#24306b'
 	},
 	content: {
 		flexGrow: 1,
@@ -69,12 +79,11 @@ const navLinkStyle = {
 }
 
 const ListNavItem = withRouter(props => {
-	const { label, to, external, exact = false } = props
-	const { pathname } = props.location
+	const { label, to, external = false, exact = false, location } = props
 
 	const itemProps = {
-		selected: to === pathname,
-		style: navLinkStyle
+		style: navLinkStyle,
+		selected: matchPath(location.pathname, { path: to, exact })
 	}
 	if (external) {
 		Object.assign(itemProps, {
@@ -101,18 +110,31 @@ const ListNavItem = withRouter(props => {
 	)
 })
 
-const { object, string } = PropTypes
+const { arrayOf, bool, object, shape, string } = PropTypes
 
 ListNavItem.propTypes = {
 	to: string,
-	label: string
+	label: string,
+	exact: bool,
+	external: bool,
+	location: object
 }
 
 function DrawerContents(props) {
-	const { classes } = props;
+	const { classes, pages, readme, demo } = props;
+
+	let useDefaultHomepage = true
+	for (let page of pages) {
+		if (page.path === '/') {
+			useDefaultHomepage = false
+			break
+		}
+	}
 
 	return (
-		<Fragment>
+		<MuiThemeProvider theme={darkTheme}>
+			<CssBaseline />
+
 			<div className={classes.topLeftToolbar}>
 				<Toolbar>
 					<Typography
@@ -128,10 +150,23 @@ function DrawerContents(props) {
 			<Divider />
 
 			<List>
-				<ListNavItem to="/" exact label="Form Page"DrawerContents />
-				<ListNavItem to="/page2" label="Page 2"DrawerContents />
-				<ListNavItem to="/page3" label="Page 3"DrawerContents />
-				<ListNavItem to="/page4" label="Page 4"DrawerContents />
+				{useDefaultHomepage && (
+					<ListNavItem
+						label="Home"
+						to="/"
+						exact
+					/>
+				)}
+
+				{pages.map(({ label, path, exact, external }, idx) => (
+					<ListNavItem
+						key={idx}
+						label={label}
+						to={path}
+						exact={exact || false}
+						external={external || false}
+					/>
+				))}
 			</List>
 
 			<Divider />
@@ -139,20 +174,30 @@ function DrawerContents(props) {
 			<List>
 				<ListNavItem
 					label="Readme"
-					to="https://github.com/allpro/repo-name/blob/master/README.md"
+					to={readme || ''}
 					external
 				/>
 				<ListNavItem
 					label="CodeSandbox Demo"
-					to="https://codesandbox.io/s/github/allpro/repo-name/tree/master/example"
+					to={demo || ''}
 					external
 				/>
 			</List>
-		</Fragment>
+
+			<Divider />
+
+			<List>
+				<ListNavItem
+					label="More Components"
+					to="https://allpro.github.io/"
+					external
+				/>
+			</List>
+		</MuiThemeProvider>
 	)
 }
 
-class RepoNameDemo extends React.Component {
+class NavTabsDemo extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -171,7 +216,16 @@ class RepoNameDemo extends React.Component {
 	}
 
 	render() {
-		const { classes } = this.props
+		const { props } = this
+		const { classes, pages } = props
+
+		let useDefaultHomepage = true
+		for (let page of pages) {
+			if (page.path === '/') {
+				useDefaultHomepage = false
+				break
+			}
+		}
 
 		return (
 			<div className={classes.root} ref={this.containerRef}>
@@ -189,13 +243,12 @@ class RepoNameDemo extends React.Component {
 						</IconButton>
 
 						<Typography variant="h6" color="inherit" noWrap>
-							React-Router-Pause Example
+							{props.title || 'Demo Title'}
 						</Typography>
 					</Toolbar>
 				</AppBar>
 
 				<nav className={classes.drawer}>
-					{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
 					<Hidden smUp implementation="css">
 						<Drawer
 							variant="temporary"
@@ -205,7 +258,7 @@ class RepoNameDemo extends React.Component {
 							onClose={this.toggleDrawer}
 							classes={{ paper: classes.drawerPaper }}
 						>
-							<DrawerContents classes={classes} />
+							<DrawerContents {...props} />
 						</Drawer>
 					</Hidden>
 
@@ -217,22 +270,49 @@ class RepoNameDemo extends React.Component {
 								paper: classes.drawerPaper,
 							}}
 						>
-							<DrawerContents classes={classes} />
+							<DrawerContents {...props} />
 						</Drawer>
 					</Hidden>
 				</nav>
 
 				<main id="top" className={classes.content}>
 					<div className={classes.toolbar} />
-					<Routes />
+
+					<Switch>
+						{useDefaultHomepage && (
+							<PropsRoute
+								path="/"
+								exact
+								component={Home}
+							/>
+						)}
+
+						{pages.map(({ path, exact, component }, idx) => (
+							<PropsRoute
+								key={idx}
+								path={path}
+								exact={exact}
+								component={component}
+							/>
+						))}
+					</Switch>
 				</main>
 			</div>
 		)
 	}
 }
 
-RepoNameDemo.propTypes = {
-	classes: object.isRequired
+NavTabsDemo.propTypes = {
+	classes: object.isRequired,
+	pages: arrayOf(shape({
+		label: string,
+		path: string,
+		exact: bool,
+		external: bool
+	})),
+	title: string,
+	readme: string,
+	demo: string
 }
 
-export default withStyles(styles)(RepoNameDemo)
+export default withStyles(styles)(NavTabsDemo)

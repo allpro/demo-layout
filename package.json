@@ -1,30 +1,26 @@
 {
   "name": "@allpro/demo-layout",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Common layout for package demos",
+  "repository": "allpro/demo-layout",
+  "homepage": "https://allpro.github.io/demo-layout",
   "author": "allpro",
   "license": "MIT",
-  "repository": "allpro/demo-layout",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
-  "scripts": {
-    "test": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
-    "build": "rollup -c",
-    "start": "rollup -c -w",
-    "prepare": "npm run build",
-    "predeploy": "cd example && npm install && npm run build",
-    "deploy": "gh-pages -d example/build"
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "peerDependencies": {
-    "prop-types": "^15.5.4",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "prop-types": ">=15",
+    "react": ">=15",
+    "react-dom": ">=15"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.0.0",
+    "@material-ui/icons": "^3.0.0",
+    "react-router-dom": "^5.0.0"
   },
   "devDependencies": {
     "@svgr/rollup": "^2.4.1",
@@ -44,6 +40,7 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.1.0",
     "gh-pages": "^1.2.0",
+    "prop-types": ">=15",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
@@ -55,7 +52,13 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-url": "^1.4.0"
   },
-  "files": [
-    "dist"
-  ]
+  "scripts": {
+    "test": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "prepare": "npm run build",
+    "predeploy": "cd example && npm install && npm run build",
+    "deploy": "gh-pages -d example/build"
+  }
 }

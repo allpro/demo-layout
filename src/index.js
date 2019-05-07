@@ -1,22 +1,36 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { render } from 'react-dom'
+import { Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
 
-import styles from './styles.css'
+import PropsRoute from './PropsRoute'
+import App from './App'
 
-export default class ExampleComponent extends Component {
-  static propTypes = {
-    text: PropTypes.string
-  }
 
-  render() {
-    const {
-      text
-    } = this.props
+const isGitHubPages = /(github\.io|codesandbox\.io)/.test(window.location.hostname)
 
-    return (
-      <div className={styles.test}>
-        Example Component: {text}
-      </div>
-    )
-  }
+
+function DemoLayout(props) {
+	const { title, pages } = props.pages
+
+	return (
+		<Router basename={isGitHubPages ? '/react-nav-tabs' : ''}>
+			<Switch>
+				{pages.map(({ path, exact }, idx) => (
+					<PropsRoute
+						key={idx}
+						path={path}
+						exact={exact}
+						component={App}
+						pages={pages}
+						title={title}
+					/>
+				))}
+
+				{/* catch any invalid URLs */}
+				<Redirect to="/" />
+			</Switch>
+		</Router>
+	)
 }
+
+render(<DemoLayout />, document.getElementById('root'))
