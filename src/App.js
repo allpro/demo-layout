@@ -83,7 +83,7 @@ const ListNavItem = withRouter(props => {
 
 	const itemProps = {
 		style: navLinkStyle,
-		selected: matchPath(location.pathname, { path: to, exact })
+		selected: !!matchPath(location.pathname, { path: to, exact })
 	}
 	if (external) {
 		Object.assign(itemProps, {
@@ -138,7 +138,7 @@ function DrawerContents(props) {
 			<div className={classes.topLeftToolbar}>
 				<Toolbar>
 					<Typography
-						variant="subheading"
+						variant="subtitle1"
 						color="inherit"
 						noWrap
 					>

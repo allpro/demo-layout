@@ -7,10 +7,10 @@ import Typography from '@material-ui/core/Typography'
 function Home() {
 	return (
 		<Fragment>
-			<Typography variant="title" gutterBottom>
+			<Typography variant="h6" gutterBottom>
 				Home
 			</Typography>
-			<Typography variant="subheading">
+			<Typography variant="subtitle1">
 				Use the navigation at left to load demos.
 				The first tab of each demo shows the code used for the demo.
 			</Typography>

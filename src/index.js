@@ -1,5 +1,4 @@
 import React from 'react'
-import { render } from 'react-dom'
 import { Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
 
 import PropsRoute from './PropsRoute'
@@ -10,10 +9,12 @@ const isGitHubPages = /(github\.io|codesandbox\.io)/.test(window.location.hostna
 
 
 function DemoLayout(props) {
-	const { title, pages } = props.pages
+	const { packageName, title, pages } = props
+
+	// console.log('DemoLayout', props)
 
 	return (
-		<Router basename={isGitHubPages ? '/react-nav-tabs' : ''}>
+		<Router basename={isGitHubPages && packageName ? `/${packageName}` : ''}>
 			<Switch>
 				{pages.map(({ path, exact }, idx) => (
 					<PropsRoute
@@ -21,10 +22,16 @@ function DemoLayout(props) {
 						path={path}
 						exact={exact}
 						component={App}
-						pages={pages}
-						title={title}
+						{...props}
 					/>
 				))}
+
+				<PropsRoute
+					path="/"
+					exact
+					component={App}
+					{...props}
+				/>
 
 				{/* catch any invalid URLs */}
 				<Redirect to="/" />
@@ -33,4 +40,4 @@ function DemoLayout(props) {
 	)
 }
 
-render(<DemoLayout />, document.getElementById('root'))
+export default DemoLayout

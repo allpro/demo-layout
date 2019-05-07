@@ -1,11 +1,26 @@
 {
   "name": "@allpro/demo-layout",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Common layout for package demos",
   "repository": "allpro/demo-layout",
   "homepage": "https://allpro.github.io/demo-layout",
   "author": "allpro",
   "license": "MIT",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "jsnext:main": "esm/index.js",
+  "files": [
+    "cjs",
+    "esm",
+    "umd"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",

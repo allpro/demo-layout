@@ -1,7 +1,7 @@
 {
   "name": "@allpro/demo-layout-example",
   "homepage": "https://allpro.github.io/@allpro/demo-layout",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "private": true,
   "dependencies": {
