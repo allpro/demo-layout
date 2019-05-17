@@ -73,6 +73,8 @@
     ],
     // DO NOT force a specific number of newlines after imports
     "import/newline-after-import": 0,
+    // Eslint shows errors for imports of peerDependencies; avoid this
+    "import/no-unresolved": 0,
 
     "react/display-name": 0,
     "react/no-children-prop": 0,

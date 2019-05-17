@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React, { Fragment, createRef } from 'react'
 import { Switch, NavLink, withRouter, matchPath } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -29,6 +29,7 @@ const darkTheme = createMuiTheme({
 
 const drawerWidth = 200
 
+// noinspection JSUnresolvedFunction,JSUnresolvedVariable,JSUnresolvedVariable
 const styles = theme => ({
 	root: {
 		display: 'flex'
@@ -36,13 +37,13 @@ const styles = theme => ({
 	appBar: {
 		marginLeft: drawerWidth,
 		[theme.breakpoints.up('sm')]: {
-			width: `calc(100% - ${drawerWidth}px)`,
+			width: `calc(100% - ${drawerWidth}px)`
 		}
 	},
 	drawer: {
 		[theme.breakpoints.up('sm')]: {
 			width: drawerWidth,
-			flexShrink: 0,
+			flexShrink: 0
 		}
 	},
 	drawerPaper: {
@@ -57,8 +58,8 @@ const styles = theme => ({
 	menuButton: {
 		marginRight: 20,
 		[theme.breakpoints.up('sm')]: {
-			display: 'none',
-		},
+			display: 'none'
+		}
 	},
 	toolbar: theme.mixins.toolbar,
 	topLeftToolbar: {
@@ -121,7 +122,7 @@ ListNavItem.propTypes = {
 }
 
 function DrawerContents(props) {
-	const { classes, pages, readme, demo } = props;
+	const { classes, pages, readme, demo } = props
 
 	let useDefaultHomepage = true
 	for (let page of pages) {
@@ -158,31 +159,44 @@ function DrawerContents(props) {
 					/>
 				)}
 
-				{pages.map(({ label, path, exact, external }, idx) => (
-					<ListNavItem
-						key={idx}
-						label={label}
-						to={path}
-						exact={exact || false}
-						external={external || false}
-					/>
-				))}
+				{pages.map(({ label, path, exact, external }, idx) => {
+					// No label means DO NOT create a menu item for this route
+					if (!label) return null
+
+					return (
+						<ListNavItem
+							key={idx}
+							label={label}
+							to={path}
+							exact={exact || false}
+							external={external || false}
+						/>
+					)
+				})}
 			</List>
 
-			<Divider />
+			{(demo || readme) &&
+				<Fragment>
+					<Divider />
 
-			<List>
-				<ListNavItem
-					label="Readme"
-					to={readme || ''}
-					external
-				/>
-				<ListNavItem
-					label="CodeSandbox Demo"
-					to={demo || ''}
-					external
-				/>
-			</List>
+					<List>
+						{readme &&
+							<ListNavItem
+								label="Readme"
+								to={readme}
+								external
+							/>
+						}
+						{demo &&
+							<ListNavItem
+								label="CodeSandbox Demo"
+								to={demo}
+								external
+							/>
+						}
+					</List>
+				</Fragment>
+			}
 
 			<Divider />
 
@@ -197,12 +211,13 @@ function DrawerContents(props) {
 	)
 }
 
-class NavTabsDemo extends React.Component {
+
+class DemoLayoutApp extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			openDrawer: false,
+			openDrawer: false
 		}
 
 		// Use wrapper as container for Drawer so works well inside CodeSandbox
@@ -212,12 +227,12 @@ class NavTabsDemo extends React.Component {
 	}
 
 	toggleDrawer() {
-		this.setState(state => ({ openDrawer: !state.openDrawer }));
+		this.setState(state => ({ openDrawer: !state.openDrawer }))
 	}
 
 	render() {
-		const { props } = this
-		const { classes, pages } = props
+		const appProps = this.props
+		const { classes, pages } = appProps
 
 		let useDefaultHomepage = true
 		for (let page of pages) {
@@ -243,7 +258,7 @@ class NavTabsDemo extends React.Component {
 						</IconButton>
 
 						<Typography variant="h6" color="inherit" noWrap>
-							{props.title || 'Demo Title'}
+							{appProps.title || 'Demo Title'}
 						</Typography>
 					</Toolbar>
 				</AppBar>
@@ -258,7 +273,7 @@ class NavTabsDemo extends React.Component {
 							onClose={this.toggleDrawer}
 							classes={{ paper: classes.drawerPaper }}
 						>
-							<DrawerContents {...props} />
+							<DrawerContents {...appProps} />
 						</Drawer>
 					</Hidden>
 
@@ -267,10 +282,10 @@ class NavTabsDemo extends React.Component {
 							variant="permanent"
 							open
 							classes={{
-								paper: classes.drawerPaper,
+								paper: classes.drawerPaper
 							}}
 						>
-							<DrawerContents {...props} />
+							<DrawerContents {...appProps} />
 						</Drawer>
 					</Hidden>
 				</nav>
@@ -287,12 +302,13 @@ class NavTabsDemo extends React.Component {
 							/>
 						)}
 
-						{pages.map(({ path, exact, component }, idx) => (
+						{pages.map(({ path, exact, component, props }, idx) => (
 							<PropsRoute
 								key={idx}
 								path={path}
 								exact={exact}
 								component={component}
+								props={props}
 							/>
 						))}
 					</Switch>
@@ -302,17 +318,18 @@ class NavTabsDemo extends React.Component {
 	}
 }
 
-NavTabsDemo.propTypes = {
+
+DemoLayoutApp.propTypes = {
 	classes: object.isRequired,
 	pages: arrayOf(shape({
 		label: string,
 		path: string,
 		exact: bool,
 		external: bool
-	})),
+	})).isRequired,
 	title: string,
 	readme: string,
 	demo: string
 }
 
-export default withStyles(styles)(NavTabsDemo)
+export default withStyles(styles)(DemoLayoutApp)

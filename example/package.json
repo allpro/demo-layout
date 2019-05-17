@@ -1,15 +1,18 @@
 {
   "name": "@allpro/demo-layout-example",
   "homepage": "https://allpro.github.io/@allpro/demo-layout",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "@material-ui/core": "^3.0.0",
+    "@material-ui/icons": "^3.0.0",
+    "prop-types": ">=15",
+    "react": ">=15",
+    "react-dom": ">=15",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "^1.1.4",
-    "@allpro/demo-layout": "file:.."
+    "@allpro/demo-layout": "^0.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

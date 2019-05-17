@@ -27,7 +27,8 @@ const basePlugins = [
 			// relative to the current directory, or the name
 			// of a module in node_modules
 			'node_modules/@material-ui/core/styles/index.js': [ 'withStyles' ],
-			'node_modules/react-is/index.js': [ 'isValidElementType' ]
+			'node_modules/react-is/index.js': [ 'isValidElementType' ],
+			'node_modules/react/index.js': [ 'Fragment', 'createRef' ]
 		}
 	}),
 

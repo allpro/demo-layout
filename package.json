@@ -1,6 +1,6 @@
 {
   "name": "@allpro/demo-layout",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Common layout for package demos",
   "repository": "allpro/demo-layout",
   "homepage": "https://allpro.github.io/demo-layout",
@@ -28,15 +28,14 @@
     "not op_mini all"
   ],
   "peerDependencies": {
-    "prop-types": ">=15",
-    "react": ">=15",
-    "react-dom": ">=15"
-  },
-  "dependencies": {
     "@material-ui/core": "^3.0.0",
     "@material-ui/icons": "^3.0.0",
+    "prop-types": ">=15",
+    "react": ">=15",
+    "react-dom": ">=15",
     "react-router-dom": "^5.0.0"
   },
+  "dependencies": {},
   "devDependencies": {
     "@svgr/rollup": "^2.4.1",
     "babel-core": "^6.26.3",
@@ -55,9 +54,6 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.1.0",
     "gh-pages": "^1.2.0",
-    "prop-types": ">=15",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^3.0.7",
